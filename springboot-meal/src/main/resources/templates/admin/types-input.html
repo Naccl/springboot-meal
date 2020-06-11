@@ -1,0 +1,109 @@
+<!--
+                ___           ___           ___           ___           ___
+               /\__\         /\  \         /\  \         /\  \         /\__\
+              /::|  |       /::\  \       /::\  \       /::\  \       /:/  /
+             /:|:|  |      /:/\:\  \     /:/\:\  \     /:/\:\  \     /:/  /
+            /:/|:|  |__   /::\~\:\  \   /:/  \:\  \   /:/  \:\  \   /:/  /
+           /:/ |:| /\__\ /:/\:\ \:\__\ /:/__/ \:\__\ /:/__/ \:\__\ /:/__/
+           \/__|:|/:/  / \/__\:\/:/  / \:\  \  \/__/ \:\  \  \/__/ \:\  \
+               |:/:/  /       \::/  /   \:\  \        \:\  \        \:\  \
+               |::/  /        /:/  /     \:\  \        \:\  \        \:\  \
+               /:/  /        /:/  /       \:\__\        \:\__\        \:\__\
+               \/__/         \/__/         \/__/         \/__/         \/__/
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>菜品分类管理</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Naccl/blog-resource/github-badge.min.css">
+</head>
+<body class="site">
+
+  <!--导航-->
+  <nav th:replace="admin/_fragments :: menu(2)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+  </nav>
+  <div class="ui attached pointing menu">
+    <div class="ui container">
+      <div class="right menu">
+        <a href="#" th:href="@{/admin/types}" class="item">分类列表</a>
+        <a href="#" th:href="@{/admin/types/input}" class="teal active item">添加分类</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-content">
+
+    <!--中间内容-->
+    <div class="m-container-small m-padded-tb-big">
+      <div class="ui container">
+
+        <!-- 有id传来时为编辑，否则为添加 -->
+        <form action="#" method="post" th:object="${type}" th:action="@{/admin/types}" class="ui form">
+
+          <input type="hidden" name="id" th:value="*{id}">
+          <div class="field">
+            <div class="ui left labeled input">
+              <label class="ui teal basic label">名称</label>
+              <input type="text" name="name" placeholder="分类名称" th:value="*{name}">
+            </div>
+          </div>
+
+          <!-- 表单验证提示 -->
+          <div class="ui error message"></div>
+
+          <!-- 后台验证错误提示 -->
+          <!--/*/
+          <div class="ui negative message" th:if="${#fields.hasErrors('name')}"  >
+            <i class="close icon"></i>
+            <div class="header">错误</div>
+            <p th:errors="*{name}">提交信息不符合规则</p>
+          </div>
+           /*/-->
+          <div class="ui right aligned container">
+            <button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+            <button class="ui teal submit button">提交</button>
+          </div>
+
+        </form>
+
+
+      </div>
+    </div>
+
+  </div>
+
+  <!--底部footer-->
+  <footer th:replace="_fragments :: footer" class="ui inverted vertical segment">
+  </footer>
+
+  <!--/*/<th:block th:replace="admin/_fragments :: myScript">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <!--/*/</th:block>/*/-->
+  <script>
+      $('.message .close').on('click', function () {
+          $(this).closest('.message').transition('fade');
+      });
+
+      $('.submit').click(function () {
+          $('.negative.message').hide();
+      });
+
+      $('.ui.form').form({
+          fields: {
+              name: {
+                  identifier: 'name',
+                  rules: [{
+                      type: 'empty',
+                      prompt: '请输入分类名称'
+                  }]
+              }
+          }
+      });
+  </script>
+</body>
+</html>

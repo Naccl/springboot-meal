@@ -1,0 +1,210 @@
+<!--
+                ___           ___           ___           ___           ___
+               /\__\         /\  \         /\  \         /\  \         /\__\
+              /::|  |       /::\  \       /::\  \       /::\  \       /:/  /
+             /:|:|  |      /:/\:\  \     /:/\:\  \     /:/\:\  \     /:/  /
+            /:/|:|  |__   /::\~\:\  \   /:/  \:\  \   /:/  \:\  \   /:/  /
+           /:/ |:| /\__\ /:/\:\ \:\__\ /:/__/ \:\__\ /:/__/ \:\__\ /:/__/
+           \/__|:|/:/  / \/__\:\/:/  / \:\  \  \/__/ \:\  \  \/__/ \:\  \
+               |:/:/  /       \::/  /   \:\  \        \:\  \        \:\  \
+               |::/  /        /:/  /     \:\  \        \:\  \        \:\  \
+               /:/  /        /:/  /       \:\__\        \:\__\        \:\__\
+               \/__/         \/__/         \/__/         \/__/         \/__/
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>注册</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body class="site">
+
+  <div class="site-content">
+
+    <div class="m-login-in-center">
+      <div class="ur container">
+        <div class="ui middle aligned center aligned grid">
+          <div class="column">
+            <h2 class="ui teal image header content">用户注册</h2>
+
+            <form class="ui large form" th:object="${user}" method="post" action="#" th:action="@{/register}">
+              <div class="ui segment">
+
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    <input type="text" name="username" placeholder="用户名">
+                    <div class="ui left pointing red basic large label hidden" id="verify">用户名不可用</div>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="password" placeholder="密码">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="passwordAgain" placeholder="确认密码">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="phone icon"></i>
+                    <input type="tel" name="telephone" placeholder="电话">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="home icon"></i>
+                    <input type="text" name="address" placeholder="地址">
+                  </div>
+                </div>
+
+                <button class="ui fluid large teal submit button">注 册</button>
+              </div>
+
+              <!-- 表单验证提示 -->
+              <div class="ui error message"></div>
+
+              <!-- 后台验证错误提示 -->
+              <!--/*/
+              <div class="ui negative message" th:if="${#fields.hasErrors('*')}"  >
+                <i class="close icon"></i>
+                <div class="header">错误</div>
+                <p th:each="err:${#fields.errors('*')}" th:text="${err}">提交信息不符合规则</p>
+              </div>
+              /*/-->
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!--/*/<th:block th:replace="_fragments :: myScript">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <!--/*/</th:block>/*/-->
+  <script>
+      $("[name='username']").focus(function () {
+          $('#verify').addClass("hidden");
+      });
+
+      $("[name='username']").blur(function () {
+          $.post("/register/verify", {
+              "username": $("[name='username']").val()
+          }, function (result) {
+              if (!result.success) {
+                  $('#verify').removeClass("hidden");
+              }
+          }, "json");
+      });
+
+      $('.message .close').on('click', function () {
+          $(this).closest('.message').transition('fade');
+      });
+
+      $('.submit').click(function () {
+          $('.negative.message').hide();
+      });
+
+      $('.ui.form').form({
+          fields: {
+              username: {
+                  identifier: 'username',
+                  rules: [
+                      {
+                          type: 'empty',
+                          prompt: '请输入用户名'
+                      },
+                      {
+                          type: 'minLength[5]',
+                          prompt: '用户名至少5个字符'
+                      },
+                      {
+                          type: 'maxLength[20]',
+                          prompt: '用户名最多20个字符'
+                      }
+                  ]
+              },
+              password: {
+                  identifier: 'password',
+                  rules: [
+                      {
+                          type: 'empty',
+                          prompt: '请输入密码'
+                      },
+                      {
+                          type: 'minLength[6]',
+                          prompt: '密码至少6个字符'
+                      },
+                      {
+                          type: 'maxLength[20]',
+                          prompt: '密码最多20字符'
+                      }
+                  ]
+              },
+              passwordAgain: {
+                  identifier: 'passwordAgain',
+                  rules: [
+                      {
+                          type: 'empty',
+                          prompt: '请输入确认密码'
+                      },
+                      {
+                          type: 'match[password]',
+                          prompt: '请输入正确的密码'
+                      }
+                  ]
+              },
+              telephone: {
+                  identifier: 'telephone',
+                  rules: [
+                      {
+                          type: 'empty',
+                          prompt: '请输入电话'
+                      },
+                      {
+                          type: 'minLength[5]',
+                          prompt: '电话至少5个字符'
+                      },
+                      {
+                          type: 'maxLength[20]',
+                          prompt: '电话最多20个字符'
+                      }
+                  ]
+              },
+              address: {
+                  identifier: 'address',
+                  rules: [
+                      {
+                          type: 'empty',
+                          prompt: '请输入地址'
+                      },
+                      {
+                          type: 'minLength[5]',
+                          prompt: '地址至少5个字符'
+                      },
+                      {
+                          type: 'maxLength[50]',
+                          prompt: '地址最多50个字符'
+                      }
+                  ]
+              },
+          }
+      });
+  </script>
+</body>
+</html>

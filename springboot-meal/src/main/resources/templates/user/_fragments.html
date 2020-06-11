@@ -1,0 +1,57 @@
+<!--
+                ___           ___           ___           ___           ___
+               /\__\         /\  \         /\  \         /\  \         /\__\
+              /::|  |       /::\  \       /::\  \       /::\  \       /:/  /
+             /:|:|  |      /:/\:\  \     /:/\:\  \     /:/\:\  \     /:/  /
+            /:/|:|  |__   /::\~\:\  \   /:/  \:\  \   /:/  \:\  \   /:/  /
+           /:/ |:| /\__\ /:/\:\ \:\__\ /:/__/ \:\__\ /:/__/ \:\__\ /:/__/
+           \/__|:|/:/  / \/__\:\/:/  / \:\  \  \/__/ \:\  \  \/__/ \:\  \
+               |:/:/  /       \::/  /   \:\  \        \:\  \        \:\  \
+               |::/  /        /:/  /     \:\  \        \:\  \        \:\  \
+               /:/  /        /:/  /       \:\__\        \:\__\        \:\__\
+               \/__/         \/__/         \/__/         \/__/         \/__/
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:replace="${title}">网络点餐系统</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Naccl/blog-resource/github-badge.min.css">
+</head>
+<body class="site">
+
+  <!--导航-->
+  <nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+      <div class="ui inverted secondary stackable menu">
+        <h2 class="ui teal header item">网络点餐系统</h2>
+        <a href="#" th:href="@{/user/index}" class="item m-mobile-hide m-item" th:classappend="${n==1}?'active'"><i class="home icon"></i>菜品列表</a>
+        <a href="#" th:href="@{/user/diningcar}" class="item m-mobile-hide m-item" th:classappend="${n==2}?'active'"><i class="shopping cart icon"></i>点餐车</a>
+        <div class="right item m-mobile-hide m-item">
+          <a href="#" th:href="@{/user/input}" class="item m-mobile-hide m-item" th:classappend="${n==3}?'active'"><i class="info icon"></i>修改资料</a>
+          <a href="#" th:href="@{/logout}" class="item m-mobile-hide m-item"><i class="sign-out icon"></i>退出</a>
+        </div>
+      </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+      <i class="sidebar icon"></i>
+    </a>
+  </nav>
+
+  <div class="site-content">
+  </div>
+
+  <th:block th:fragment="myScript">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script>
+        $('.menu.toggle').click(function () {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+    </script>
+  </th:block>
+</body>
+</html>

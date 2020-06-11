@@ -1,0 +1,91 @@
+<!--
+                ___           ___           ___           ___           ___
+               /\__\         /\  \         /\  \         /\  \         /\__\
+              /::|  |       /::\  \       /::\  \       /::\  \       /:/  /
+             /:|:|  |      /:/\:\  \     /:/\:\  \     /:/\:\  \     /:/  /
+            /:/|:|  |__   /::\~\:\  \   /:/  \:\  \   /:/  \:\  \   /:/  /
+           /:/ |:| /\__\ /:/\:\ \:\__\ /:/__/ \:\__\ /:/__/ \:\__\ /:/__/
+           \/__|:|/:/  / \/__\:\/:/  / \:\  \  \/__/ \:\  \  \/__/ \:\  \
+               |:/:/  /       \::/  /   \:\  \        \:\  \        \:\  \
+               |::/  /        /:/  /     \:\  \        \:\  \        \:\  \
+               /:/  /        /:/  /       \:\__\        \:\__\        \:\__\
+               \/__/         \/__/         \/__/         \/__/         \/__/
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body class="site">
+
+  <div class="site-content">
+
+    <div class="m-login-in-center">
+      <div class="ur container">
+        <div class="ui middle aligned center aligned grid">
+          <div class="column">
+            <h2 class="ui teal image header content">欢迎登录</h2>
+            <form class="ui large form" method="post" action="#" th:action="@{/login}">
+              <div class="ui segment">
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    <input type="text" name="username" placeholder="用户名">
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="password" placeholder="密码">
+                  </div>
+                </div>
+                <button class="ui fluid large teal submit button">登 录</button>
+              </div>
+
+              <div class="ui message">
+                新用户？ <a href="#" th:href="@{/register}">注册</a>
+              </div>
+
+              <!-- 表单验证提示 -->
+              <div class="ui error message"></div>
+              <!-- 后台验证错误提示 -->
+              <div class="ui negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!--/*/<th:block th:replace="_fragments :: myScript">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <!--/*/</th:block>/*/-->
+  <script>
+      $('.ui.form').form({
+          fields: {
+              username: {
+                  identifier: 'username',
+                  rules: [{
+                      type: 'empty',
+                      prompt: '请输入用户名'
+                  }]
+              },
+              password: {
+                  identifier: 'password',
+                  rules: [{
+                      type: 'empty',
+                      prompt: '请输入密码'
+                  }]
+              }
+          }
+      });
+  </script>
+</body>
+</html>

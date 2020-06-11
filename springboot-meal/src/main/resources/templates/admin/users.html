@@ -1,0 +1,141 @@
+<!--
+                ___           ___           ___           ___           ___
+               /\__\         /\  \         /\  \         /\  \         /\__\
+              /::|  |       /::\  \       /::\  \       /::\  \       /:/  /
+             /:|:|  |      /:/\:\  \     /:/\:\  \     /:/\:\  \     /:/  /
+            /:/|:|  |__   /::\~\:\  \   /:/  \:\  \   /:/  \:\  \   /:/  /
+           /:/ |:| /\__\ /:/\:\ \:\__\ /:/__/ \:\__\ /:/__/ \:\__\ /:/__/
+           \/__|:|/:/  / \/__\:\/:/  / \:\  \  \/__/ \:\  \  \/__/ \:\  \
+               |:/:/  /       \::/  /   \:\  \        \:\  \        \:\  \
+               |::/  /        /:/  /     \:\  \        \:\  \        \:\  \
+               /:/  /        /:/  /       \:\__\        \:\__\        \:\__\
+               \/__/         \/__/         \/__/         \/__/         \/__/
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户管理</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Naccl/blog-resource/github-badge.min.css">
+</head>
+<body class="site">
+
+  <!--导航-->
+  <nav th:replace="admin/_fragments :: menu(3)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+  </nav>
+  <div class="ui attached pointing menu">
+    <div class="ui container">
+      <div class="right menu">
+        <a href="#" th:href="@{/admin/users}" class="teal active item">用户列表</a>
+        <a href="#" th:href="@{/admin/users/input}" class="item">添加用户</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-content">
+
+    <!--中间内容-->
+    <div class="m-container-small m-padded-tb-big">
+      <div class="ui container">
+
+        <!-- message不为空时显示 -->
+        <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+          <i class="close icon"></i>
+          <div class="header">提示：</div>
+          <p th:text="${message}">操作成功！</p>
+        </div>
+
+        <table class="ui celled teal table m-text" style="text-align:center;">
+          <thead>
+          <tr>
+            <th>序号</th>
+            <th>用户名</th>
+            <th>密码</th>
+            <th>角色</th>
+            <th>电话</th>
+            <th>地址</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr th:each="user,iterStat : ${page.content}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${user.username}">admin</td>
+            <td th:text="${user.password}">123</td>
+            <td th:text="${user.ident}==0 ? '普通用户' : '管理员'">管理员</td>
+            <td th:text="${user.telephone}">123456789</td>
+            <td th:text="${user.address}">大连市沙河口区</td>
+            <td>
+              <a href="#" th:href="@{/admin/users/{id}/input(id=${user.id})}" class="ui mini teal basic button">修改</a>
+              <a th:data-href="@{/admin/users/{id}/delete(id=${user.id})}" class="ui mini red basic delete button">删除</a>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+
+        <!--footer-->
+        <div class="ui bottom" th:if="${page.totalPages}>1">
+          <div class="ui middle aligned three column grid">
+            <div class="column">
+              <a href="#" th:href="@{/admin/users(page=${page.number}-1)}" th:unless="${page.first}" class="ui blue inverted labeled icon button">
+                <i class="arrow left icon"></i>上一页</a>
+            </div>
+            <div class="center aligned column">
+              <span class="m-margin-lr-small" th:text="|${page.number+1} / ${page.totalPages}|">2 / 7</span>
+            </div>
+            <div class="right aligned column">
+              <a href="#" th:href="@{/admin/users(page=${page.number}+1)}" th:unless="${page.last}" class="ui blue inverted right labeled icon button">
+                下一页<i class="arrow right icon"></i></a>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+    <!-- 确认框 -->
+    <div class="ui basic modal">
+      <div class="ui icon header"><i class="trash alternate outline icon"></i>删除</div>
+      <div class="content"><h1>确定要删除该用户吗？</h1></div>
+      <div class="actions">
+        <div class="ui basic cancel inverted button"><i class="remove icon"></i>取消</div>
+        <div id="ok" class="ui red ok inverted button"><i class="checkmark icon"></i>删除</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!--底部footer-->
+  <footer th:replace="_fragments :: footer" class="ui inverted vertical segment">
+  </footer>
+
+  <!--/*/<th:block th:replace="admin/_fragments :: myScript">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <!--/*/</th:block>/*/-->
+  <script>
+      $('.message .close').on('click', function () {
+          $(this).closest('.message').transition('fade');
+      });
+
+      var url;
+      /* 分页用的是刷新页面，直接用jQuery */
+      $('.delete.button').click(function (event) {
+          event.preventDefault();
+          url = $(this).attr('data-href');
+          $('.ui.basic.modal').modal('show');
+      });
+
+      $('#ok').click(function () {
+          window.location.href = url;
+      });
+  </script>
+</body>
+</html>

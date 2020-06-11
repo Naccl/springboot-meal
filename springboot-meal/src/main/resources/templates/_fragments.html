@@ -1,0 +1,85 @@
+<!--
+                ___           ___           ___           ___           ___
+               /\__\         /\  \         /\  \         /\  \         /\__\
+              /::|  |       /::\  \       /::\  \       /::\  \       /:/  /
+             /:|:|  |      /:/\:\  \     /:/\:\  \     /:/\:\  \     /:/  /
+            /:/|:|  |__   /::\~\:\  \   /:/  \:\  \   /:/  \:\  \   /:/  /
+           /:/ |:| /\__\ /:/\:\ \:\__\ /:/__/ \:\__\ /:/__/ \:\__\ /:/__/
+           \/__|:|/:/  / \/__\:\/:/  / \:\  \  \/__/ \:\  \  \/__/ \:\  \
+               |:/:/  /       \::/  /   \:\  \        \:\  \        \:\  \
+               |::/  /        /:/  /     \:\  \        \:\  \        \:\  \
+               /:/  /        /:/  /       \:\__\        \:\__\        \:\__\
+               \/__/         \/__/         \/__/         \/__/         \/__/
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:replace="${title}">网络点餐系统</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Naccl/blog-resource/github-badge.min.css">
+</head>
+<body class="site">
+
+  <!--导航-->
+  <nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+      <div class="ui inverted secondary stackable menu">
+        <h2 class="ui teal header item">网络点餐系统</h2>
+        <a href="#" th:href="@{/}" class="item m-mobile-hide m-item" th:classappend="${n==1}?'active'"><i class="home icon"></i>首页</a>
+        <div class="right item m-mobile-hide m-item">
+          <a href="#" th:href="@{/login}" class="item m-mobile-hide m-item"><i class="info icon"></i>登录</a>
+        </div>
+      </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+      <i class="sidebar icon"></i>
+    </a>
+  </nav>
+
+  <div class="site-content">
+  </div>
+
+  <!--底部footer-->
+  <footer th:fragment="footer" class="ui inverted vertical segment">
+    <div class="ui center aligned container">
+
+      <p class="m-text-thin m-text-spaced m-opacity-tiny">
+        Copyright © 2020 <a href="http://naccl.top" th:href="@{http://naccl.top}" target="_blank" style="color:#ffe500">NACCL</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+        <img style="width: 17px; height: 17px; margin-bottom: -4px;" src="../static/images/beian.png" th:src="@{/images/beian.png}" alt="" width="20" height="20"/>
+        <a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener" style="color:#ffe500">闽ICP备20005222号</a>
+      </p>
+
+      <div>
+        <div class="github-badge">
+          <a style="color: #fff" rel="license" href="https://spring.io/projects/spring-boot/" target="_blank"
+             title="由 Spring Boot 强力驱动">
+            <span class="badge-subject">Powered</span><span class="badge-value bg-blue">Spring Boot</span></a>
+        </div>
+        <div class="github-badge">
+          <a style="color: #fff" rel="license" href="https://www.thymeleaf.org/" target="_blank" title="Thymeleaf 页面渲染">
+            <span class="badge-subject">SSR</span><span class="badge-value bg-brightgreen">Thymeleaf</span></a>
+        </div>
+        <div class="github-badge">
+          <a style="color: #fff" rel="license" href="https://www.semantic-ui.com/" target="_blank"
+             title="UI 框架 Semantic UI">
+            <span class="badge-subject">UI</span><span class="badge-value bg-semantic-ui">Semantic UI</span></a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <th:block th:fragment="myScript">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script>
+        $('.menu.toggle').click(function () {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+    </script>
+  </th:block>
+</body>
+</html>
